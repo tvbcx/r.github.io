@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>...</title>
+  <link rel="stylesheet" href="/styles.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.themoviedb.org" crossorigin>
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..700&family=Stack+Sans+Headline:wght@400&display=swap" rel="stylesheet">
+  <style>
+    #show-poster-img {
+      background-color: #32425b;
+      display: block;
+    }
+    #watchlist-btn {
+      background-color: #ffffff;
+      border-color: #ffffff;
+      color: #0b121e;
+    }
+    #markas-btn-label {
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 37px;
+      color: #b3c2db;
+      border-color: #30405a;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      #watchlist-btn:hover {
+        background-color: #e4e7ee;
+        border-color: #e4e7ee;
+      }
+      #markas-btn-label:hover {
+        color: #ffffff;
+        border-color: #ffffff;
+      }
+    }
+    @media (min-width: 641px) {
+      #markas-btn-label {
+        height: 45px;
+      }
+    }
+    @media (min-width: 641px) {
+      .show-hero {
+        align-items: flex-start;
+      }
+    }
+    @media (min-width: 641px) {
+      #show-meta {
+        gap: 10px;
+      }
+      #show-meta .show-meta-dot {
+        display: none;
+      }
+      #show-meta > span:not(.show-meta-dot) {
+        padding: 6px 14px;
+        background-color: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+        color: #eaeef5;
+        font-weight: 600;
+      }
+      #show-genres {
+        gap: 10px;
+      }
+      #show-genres .genre-tag {
+        background-color: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+        color: #dde2eb;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-backing" aria-hidden="true"></div>
+
+  <div class="backdrop-container show-banner-container">
+    <div id="show-backdrop" class="backdrop-wrapper">
+      <div class="backdropimage js-show-backdrop-image"></div>
+      <div class="backdropmask"></div>
+    </div>
+    <a href="/about/" class="floating-tvbox" aria-label="TV Box">
+      <svg class="tvbox-icon" aria-hidden="true" viewBox="0 0 100 100" width="13" height="13" style="flex-shrink: 0;">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="7" />
+        <text x="50" y="50" font-family="Arial, sans-serif" font-size="76" font-weight="bold" text-anchor="middle" dominant-baseline="central" fill="currentColor">t</text>
+      </svg>
+    </a>
+
+    <a href="/home/" class="floating-home -beside-tvbox" aria-label="Home">
+      <svg class="home-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M12 3.1l8.5 7.6c.32.29.5.7.5 1.13V20a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5h-4v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.17c0-.43.18-.84.5-1.13L12 3.1z"></path>
+      </svg>
+    </a>
+
+    <input type="checkbox" id="auth-menu-toggle" class="auth-checkbox">
+    <input type="checkbox" id="signin-toggle" class="auth-checkbox">
+    <input type="checkbox" id="signup-toggle" class="auth-checkbox">
+
+    <label for="auth-menu-toggle" class="floating-auth -right" aria-label="Account">
+      <svg class="auth-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+      </svg>
+    </label>
+
+    <label for="auth-menu-toggle" class="auth-backdrop" aria-hidden="true"></label>
+
+    <div class="auth-dropdown">
+      <label for="signin-toggle" class="auth-dropdown-btn">Sign In</label>
+      <label for="signup-toggle" class="auth-dropdown-btn">Sign Up</label>
+    </div>
+
+    <div class="auth-modal-wrap signin-modal-wrap">
+      <label for="signin-toggle" class="auth-modal-backdrop" aria-hidden="true"></label>
+      <div class="auth-modal-box"></div>
+    </div>
+
+    <div class="auth-modal-wrap signup-modal-wrap">
+      <label for="signup-toggle" class="auth-modal-backdrop" aria-hidden="true"></label>
+      <div class="auth-modal-box"></div>
+    </div>
+
+    <form class="group floating-search" id="home-search-form" action="/search/" method="get">
+      <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M21.53 20.47l-3.66-3.66C19.19 15.37 20 13.28 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.28 0 4.37-.81 6.04-2.13l3.66 3.66c.14.14.33.21.53.21s.39-.07.53-.21c.29-.29.29-.77 0-1.06zM11 18c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"></path>
+      </svg>
+      <input id="home-search-input" name="q" placeholder="search" type="search" class="input" autocomplete="off">
+      <button type="submit" hidden>Search</button>
+    </form>
+  </div>
+
+  <div class="page-content">
+
+    <div id="show-status" class="search-status"></div>
+
+    <section id="show-hero" class="show-hero" hidden>
+      <div class="show-poster">
+        <img id="show-poster-img" alt="" fetchpriority="high" decoding="async">
+      </div>
+
+      <div class="show-hero-info">
+        <h1 id="show-title" class="show-title"></h1>
+
+        <div id="show-meta" class="show-meta"></div>
+
+        <div id="show-genres" class="show-genres"></div>
+
+        <div class="show-actions">
+          <input type="checkbox" id="markas-toggle" class="auth-checkbox">
+
+          <div class="watchlist-cluster" id="watchlist-cluster">
+            <button type="button" id="trailer-btn" class="trailer-btn" tabindex="-1" aria-hidden="true" aria-label="Watch trailer on YouTube">
+              <svg class="trailer-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+              <span>Watch Trailer</span>
+            </button>
+            <button type="button" id="watchlist-btn" class="watchlist-btn">Add to Watchlist</button>
+          </div>
+
+          <label for="markas-toggle" id="markas-btn-label" class="markas-btn">Mark As</label>
+
+          <label for="markas-toggle" class="markas-backdrop" aria-hidden="true"></label>
+
+          <div class="markas-popover">
+            <div id="markas-options" class="markas-options"></div>
+
+            <div class="markas-divider"></div>
+
+            <div class="markas-stars">
+              <div class="stars-track" id="markas-stars-track">
+                <div class="stars-bg">★★★★★</div>
+                <div class="stars-fg" id="markas-stars-fg">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <input type="checkbox" id="watchdate-toggle" class="auth-checkbox">
+
+          <label for="watchdate-toggle" class="watchdate-backdrop" aria-hidden="true"></label>
+
+          <div class="watchdate-popover" id="watchdate-popover">
+            <div class="wd-header">
+              <div class="wd-clapper" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 8H4l.9-3.6c.14-.56.65-.96 1.22-1.02L20 2.5V8zM19.4 3.9l-3.9.42.7 2.68 3.9-.9-.7-2.2zM14.1 4.5l-3.9.42.7 2.68 3.9-.9-.7-2.2zM8.8 5.1l-3.9.42.6 2.28 3.9-.7-.6-2z"/><rect x="4" y="9" width="16" height="12" rx="2"/></svg>
+              </div>
+              <div class="wd-header-text">
+                <span class="wd-title">Log your watch</span>
+                <span class="wd-subtitle" id="wd-show-name">this show</span>
+              </div>
+              <label for="watchdate-toggle" class="wd-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </label>
+            </div>
+
+            <p class="wd-hint" id="wd-hint">Tap the day you started watching</p>
+
+            <div class="wd-stub-row">
+              <button type="button" class="wd-stub -active" id="wd-field-start" data-field="start">
+                <span class="wd-stub-label">Started</span>
+                <span class="wd-stub-value" id="wd-value-start">—</span>
+              </button>
+              <span class="wd-duration" id="wd-duration" hidden></span>
+              <button type="button" class="wd-stub -end" id="wd-field-end" data-field="end">
+                <span class="wd-stub-label">Finished</span>
+                <span class="wd-stub-value" id="wd-value-end">—</span>
+              </button>
+            </div>
+
+            <div class="wd-tear" aria-hidden="true">
+              <span class="wd-tear-line"></span>
+              <span class="wd-tear-icon">✂</span>
+              <span class="wd-tear-line"></span>
+            </div>
+
+            <div class="wd-calendar" id="wd-calendar"></div>
+
+            <div class="wd-actions">
+              <button type="button" class="wd-btn -ghost" id="wd-cancel-btn">Cancel</button>
+              <button type="button" class="wd-btn -primary" id="wd-save-btn">Save</button>
+            </div>
+
+            <button type="button" class="wd-skip-btn" id="wd-quick-btn">Mark without dates</button>
+          </div>
+
+          <input type="checkbox" id="wd-jump-toggle" class="auth-checkbox">
+
+          <label for="wd-jump-toggle" class="wd-jump-backdrop" aria-hidden="true"></label>
+
+          <div class="wd-jump-popover" id="wd-jump-popover">
+            <div class="wd-jump-header">
+              <span class="wd-jump-title">Jump to</span>
+              <label for="wd-jump-toggle" class="wd-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </label>
+            </div>
+            <div class="wd-jump-cols">
+              <div class="wd-jump-col" id="wd-jump-months"></div>
+              <div class="wd-jump-col" id="wd-jump-years"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="show-stats">
+          <div class="show-stat">
+            <span class="value numbers" id="show-rating-value">–</span>
+            <span class="definition title-all-caps -small">Rating</span>
+          </div>
+          <div class="show-stat">
+            <span class="value numbers" id="show-seasons-value">–</span>
+            <span class="definition title-all-caps -small">Seasons</span>
+          </div>
+          <div class="show-stat">
+            <span class="value numbers" id="show-episodes-value">–</span>
+            <span class="definition title-all-caps -small">Episodes</span>
+          </div>
+        </div>
+
+        <p id="show-overview" class="show-overview"></p>
+      </div>
+    </section>
+
+  </div>
+
+<footer class="site-footer">
+<div class="footer-container">
+<p style="display: inline-flex; align-items: center; gap: 0.35rem;">
+© <a href="/about/"><strong>tvbox</strong></a> 2023 | Data from <a href="https://www.themoviedb.org/">TMDB</a>
+</p>
+</div>
+</footer>
+<script>
+(function () {
+var btn = document.querySelector('.footer-email-btn');
+if (!btn) return;
+
+function fallbackCopy(text) {
+var ta = document.createElement('textarea');
+ta.value = text;
+ta.style.position = 'fixed';
+ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.focus();
+ta.select();
+try { document.execCommand('copy'); } catch (e) {}
+document.body.removeChild(ta);
+}
+
+function showCopied() {
+btn.classList.remove('-copied');
+void btn.offsetWidth;
+btn.classList.add('-copied');
+clearTimeout(btn._copiedTimeout);
+btn._copiedTimeout = setTimeout(function () {
+btn.classList.remove('-copied');
+}, 1400);
+}
+
+btn.addEventListener('click', function () {
+var email = btn.getAttribute('data-email');
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(email).then(showCopied).catch(function () {
+fallbackCopy(email);
+showCopied();
+});
+} else {
+fallbackCopy(email);
+showCopied();
+}
+});
+})();
+</script>
+
+  <div id="page-loading-overlay" class="page-loading-overlay">
+    <div class="spinner">
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var TMDB_API_KEY = '6cb6e1dc603bc65ffb6198489d5bc5b7';
+      var TMDB_BASE = 'https://api.themoviedb.org/3';
+      var POSTER_BASE = 'https://image.tmdb.org/t/p/w500';
+      var BACKDROP_BASE = 'https://image.tmdb.org/t/p/original';
+
+      var statusEl = document.getElementById('show-status');
+      var hero = document.getElementById('show-hero');
+      var backdropImage = document.querySelector('.js-show-backdrop-image');
+
+      var trailerCluster = document.getElementById('watchlist-cluster');
+      var trailerBtn = document.getElementById('trailer-btn');
+      var trailerTimers = [];
+
+      function pickTrailerUrl(show) {
+        var results = (show.videos && show.videos.results) || [];
+        var onYouTube = results.filter(function (v) { return v.site === 'YouTube'; });
+
+        function first(pred) {
+          var matches = onYouTube.filter(pred);
+          return matches.length ? matches[0] : null;
+        }
+
+        var best =
+          first(function (v) { return v.type === 'Trailer' && v.official && v.iso_639_1 === 'en'; }) ||
+          first(function (v) { return v.type === 'Trailer' && v.official; }) ||
+          first(function (v) { return v.type === 'Trailer' && v.iso_639_1 === 'en'; }) ||
+          first(function (v) { return v.type === 'Trailer'; }) ||
+          first(function (v) { return v.type === 'Teaser' && v.official; }) ||
+          first(function (v) { return v.type === 'Teaser'; });
+
+        return best ? ('https://www.youtube.com/watch?v=' + best.key) : null;
+      }
+
+      function clearTrailerTimers() {
+        for (var i = 0; i < trailerTimers.length; i++) clearTimeout(trailerTimers[i]);
+        trailerTimers = [];
+      }
+
+      function setupTrailerReveal(show) {
+        clearTrailerTimers();
+        trailerCluster.classList.remove('-split');
+        trailerBtn.setAttribute('tabindex', '-1');
+        trailerBtn.setAttribute('aria-hidden', 'true');
+        trailerBtn.onclick = null;
+
+        var url = pickTrailerUrl(show);
+        if (!url) return;
+
+        trailerBtn.onclick = function () {
+          window.open(url, '_blank', 'noopener');
+        };
+
+        trailerTimers.push(setTimeout(function () {
+          trailerCluster.classList.add('-split');
+          trailerBtn.setAttribute('tabindex', '0');
+          trailerBtn.setAttribute('aria-hidden', 'false');
+
+          trailerTimers.push(setTimeout(function () {
+            trailerCluster.classList.remove('-split');
+            trailerBtn.setAttribute('tabindex', '-1');
+            trailerBtn.setAttribute('aria-hidden', 'true');
+          }, 2500));
+        }, 1200));
+      }
+
+      var SPINNER_HTML =
+        '<div class="spinner -inline"><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+
+      function setStatus(html, isError) {
+        if (!html) {
+          statusEl.hidden = true;
+          statusEl.innerHTML = '';
+          statusEl.classList.remove('-error');
+          return;
+        }
+        statusEl.hidden = false;
+        statusEl.innerHTML = html;
+        statusEl.classList.toggle('-error', !!isError);
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+      }
+
+      function yearFromDate(dateStr) {
+        return dateStr ? dateStr.slice(0, 4) : null;
+      }
+
+      function statusLabel(status) {
+        return status || null;
+      }
+
+      var params = new URLSearchParams(window.location.search);
+      var showId = params.get('id');
+      var imdbId = params.get('imdb');
+
+      var SHOW_CACHE_PREFIX = 'tvbox:show:';
+      var SHOW_CACHE_TTL_MS = 30 * 60 * 1000;
+
+      function readShowCache(id) {
+        try {
+          var raw = sessionStorage.getItem(SHOW_CACHE_PREFIX + id);
+          if (!raw) return null;
+          var p = JSON.parse(raw);
+          if (!p || (Date.now() - p.ts) > SHOW_CACHE_TTL_MS) return null;
+          return p.data;
+        } catch (e) { return null; }
+      }
+
+      function writeShowCache(id, data) {
+        try { sessionStorage.setItem(SHOW_CACHE_PREFIX + id, JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
+      }
+
+      function loadShow(id) {
+        var cachedShow = readShowCache(id);
+        if (cachedShow) {
+          try { renderShow(cachedShow); return; } catch (e) {}
+        }
+
+        setStatus(SPINNER_HTML);
+
+        fetch(TMDB_BASE + '/tv/' + encodeURIComponent(id) + '?api_key=' + TMDB_API_KEY + '&append_to_response=external_ids,videos')
+          .then(function (res) {
+            if (!res.ok) throw new Error('TMDB request failed (' + res.status + ')');
+            return res.json();
+          })
+          .then(function (show) {
+            writeShowCache(id, show);
+            renderShow(show);
+          })
+          .catch(function (err) {
+            setStatus('Something went wrong: ' + err.message, true);
+          });
+      }
+
+      if (showId) {
+        loadShow(showId);
+      } else if (imdbId) {
+        setStatus(SPINNER_HTML);
+        fetch('/tmdb-data.json')
+          .then(function (res) { return res.ok ? res.json() : null; })
+          .then(function (d) { return d && d.shows && d.shows[imdbId] && d.shows[imdbId].id; })
+          .catch(function () { return null; })
+          .then(function (knownId) {
+            if (knownId) { loadShow(knownId); return; }
+            return fetch(TMDB_BASE + '/find/' + encodeURIComponent(imdbId) + '?api_key=' + TMDB_API_KEY + '&external_source=imdb_id')
+              .then(function (res) {
+                if (!res.ok) throw new Error('TMDB request failed (' + res.status + ')');
+                return res.json();
+              })
+              .then(function (found) {
+                var match = found.tv_results && found.tv_results[0];
+                if (!match) throw new Error('No matching show found on TMDB');
+                loadShow(match.id);
+              });
+          })
+          .catch(function (err) {
+            setStatus('Something went wrong: ' + err.message, true);
+          });
+      } else {
+        setStatus('No show selected. Head back to <a href="/search/">search</a> and pick one.', true);
+      }
+
+      function renderShow(show) {
+            setStatus('');
+
+            var backdropUrl = show.backdrop_path
+              ? BACKDROP_BASE + show.backdrop_path
+              : (show.poster_path ? BACKDROP_BASE + show.poster_path : null);
+            if (backdropUrl) {
+              var preload = new Image();
+              preload.onload = function () {
+                backdropImage.style.backgroundImage = 'url("' + backdropUrl + '")';
+                backdropImage.classList.add('is-loaded');
+              };
+              preload.src = backdropUrl;
+            }
+
+            var posterImg = document.getElementById('show-poster-img');
+            posterImg.src = show.poster_path ? POSTER_BASE + show.poster_path : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            posterImg.alt = show.name || '';
+
+            document.getElementById('show-title').textContent = show.name || 'Untitled';
+            document.title = (show.name || 'Untitled') + ' ǀ tvbox';
+
+            window.tvboxShowMeta = { name: show.name || 'this show', firstAirDate: show.first_air_date || null };
+
+            var year = yearFromDate(show.first_air_date);
+            var metaParts = [];
+            if (year) metaParts.push('<span class="numbers">' + year + '</span>');
+            var status = statusLabel(show.status);
+            if (status) metaParts.push('<span>' + escapeHtml(status) + '</span>');
+            if (show.number_of_seasons) {
+              metaParts.push('<span>' + show.number_of_seasons + ' season' + (show.number_of_seasons === 1 ? '' : 's') + '</span>');
+            }
+            document.getElementById('show-meta').innerHTML = metaParts.join('<span class="show-meta-dot">·</span>');
+
+            var genresEl = document.getElementById('show-genres');
+            var genres = show.genres || [];
+            if (genres.length) {
+              genresEl.innerHTML = genres.map(function (g) {
+                return '<span class="genre-tag">' + escapeHtml(g.name) + '</span>';
+              }).join('');
+            }
+
+            document.getElementById('show-rating-value').textContent =
+              show.vote_average ? show.vote_average.toFixed(1) : '–';
+            document.getElementById('show-seasons-value').textContent =
+              show.number_of_seasons != null ? show.number_of_seasons : '–';
+            document.getElementById('show-episodes-value').textContent =
+              show.number_of_episodes != null ? show.number_of_episodes : '–';
+
+            document.getElementById('show-overview').textContent =
+              show.overview || 'No description available.';
+
+            hero.hidden = false;
+
+            setupTrailerReveal(show);
+      }
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var form = document.getElementById('home-search-form');
+      var input = document.getElementById('home-search-input');
+      var overlay = document.getElementById('page-loading-overlay');
+
+      function goToResults() {
+        var value = input.value.trim();
+        if (!value) return;
+        overlay.classList.add('-visible');
+        window.location.href = '/search/?q=' + encodeURIComponent(value);
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        goToResults();
+      });
+
+      input.addEventListener('search', function () {
+        goToResults();
+      });
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+          e.preventDefault();
+          goToResults();
+        }
+      });
+
+      window.addEventListener('pageshow', function () {
+        overlay.classList.remove('-visible');
+      });
+    })();
+  </script>
+  <script>
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted && document.activeElement) {
+        document.activeElement.blur();
+      }
+    });
+  </script>
+<script src="/auth.js?v=1"></script>
+<script src="/showmarking.js?v=1"></script>
+</body>
+</html>
