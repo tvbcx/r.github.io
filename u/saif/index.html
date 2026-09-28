@@ -20,7 +20,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Figtree:wght@300..700&family=Stack+Sans+Headline:wght@300..700&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/osaiif/filmtalk-profile@main/r.webp">
   <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/osaiif/filmtalk-profile@main/b.webp">
-  <link rel="preload" as="script" href="/shows.js?v=cf6e4acd3e">
   <link rel="preload" as="script" href="/stats.js?v=5">
   <link rel="preload" as="script" href="/bio.js?v=18105ad264">
   <style>
@@ -671,7 +670,10 @@ showCopied();
     </div>
   </div>
 
-  <script src="/shows.js?v=cf6e4acd3e"></script>
+  <script>
+    /* Always fetch shows.js fresh (unique URL each load) so the show count can never be served from a stale browser/CDN cache. */
+    document.write('<script src="/shows.js?t=' + Date.now() + '"><\/script>');
+  </script>
   <script src="/stats.js?v=5"></script>
   <script src="/bio.js?v=18105ad264"></script>
   <script>
