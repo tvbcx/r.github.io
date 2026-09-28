@@ -371,6 +371,13 @@
           #000 500px, #000 100%);
       }
     }
+    /* Mobile: drop the fixed full-screen grain overlay. It is pinned to the viewport
+       (not the page), so on phones it showed up as a soft fixed band at the bottom while scrolling. */
+    @media (max-width: 899px) {
+      body.profile-page::before {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body class="profile-page">
