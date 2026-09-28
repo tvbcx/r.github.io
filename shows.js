@@ -10,7 +10,7 @@ var SHOWS = [
   { title: "Game of Thrones",                    imdb: "tt0944947",  src: "https://static.tvmaze.com/uploads/images/medium_portrait/498/1245274.jpg",       rating: null    },
   { title: "Mr. Robot",                          imdb: "tt4158110",  src: "https://static.tvmaze.com/uploads/images/medium_portrait/211/528026.jpg",        rating: 4.5 },
   { title: "When They See Us",                   imdb: "tt7137906",  src: "https://image.tmdb.org/t/p/w440_and_h660_face/oPv3nNtkuc6EPEql5lgdOuQNHuG.jpg",        rating: 4    },
-  { title: "Ozark",                              imdb: "tt5071412",  src: "https://static.tvmaze.com/uploads/images/medium_portrait/398/996611.jpg",        rating: null },
+  { title: "Ozark",                             imdb: "tt5071412",  src: "https://static.tvmaze.com/uploads/images/medium_portrait/398/996611.jpg",        rating: null },
   { title: "Dexter",                             imdb: "tt0773262",  src: "https://static.tvmaze.com/uploads/images/medium_untouched/39/99906.jpg",         rating: 4    },
   { title: "Lupin",                              imdb: "tt2531336",  src: "https://static.tvmaze.com/uploads/images/medium_untouched/286/715734.jpg",       rating: 3    , journalYear: 2022, journalOrder: 1 },
   { title: "Severance",                          imdb: "tt11280740", src: "https://static.tvmaze.com/uploads/images/medium_untouched/547/1369575.jpg",      rating: 4    , journalYear: 2024, journalOrder: 16 },
